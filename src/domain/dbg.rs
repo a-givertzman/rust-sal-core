@@ -34,13 +34,13 @@ impl Dbg {
     /// - `parent` and `me` => "parent/me"
     pub fn new(parent: impl Into<String>, me: impl Into<String>) -> Self {
         Self {
-            me: me.into(),
+            me: format!("{}/{}", parent.into(), me.into()),
         }
     }
     ///
     /// Logs a message at the `info` level.
-    pub fn info(&self, msg: impl AsRef<str>) {
-        log::info!("{} | {}", self.me, msg.as_ref());
+    pub fn info(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::info!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `debug` level.
@@ -49,7 +49,7 @@ impl Dbg {
     }
     ///
     /// Logs a message at the `warn` level.
-    pub fn warg(&self, msg: impl AsRef<str>) {
+    pub fn warn(&self, msg: impl AsRef<str>) {
         log::warn!("{} | {}", self.me, msg.as_ref());
     }
     ///
