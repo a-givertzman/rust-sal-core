@@ -91,6 +91,10 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
         }
         pub fn foo(&self) {
             let result: Result<usize, &str> = Ok(173);
+            match result {
+                Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
+                Err(err) => self.dbg.warn("foo", format!("Error: {}", err)),   // "WARN: Parent/Entity | Error: Was error"
+            }
             let result: Result<usize, &str> = Err("Was error");
             match result {
                 Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
