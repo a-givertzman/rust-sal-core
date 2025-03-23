@@ -1,13 +1,12 @@
 ///
 /// Represents a nested error sequence,
-/// - As string looks like
+/// - As a string may looks like
 /// ```log
 /// Root | Root raised error 
 ///     └──Nested-3 | 
 ///        └──Nested-2 | 
 ///           └──Nested-1 | Nested-1 raised error
 /// ```
-// #[repr(transparent)]
 pub struct Error {
     me: String,
     msg: Option<String>,

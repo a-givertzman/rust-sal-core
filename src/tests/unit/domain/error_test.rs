@@ -41,21 +41,26 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
         ),
         (
             2,
-            "Nested-2 | \n   └──Nested-1 | Nested-1 raised error",
+            "Nested-2 | \
+            \n   └──Nested-1 | Nested-1 raised error",
             {
                 Error::pass("Nested-2", Error::new("Nested-1", "Nested-1 raised error"))
             }
         ),
         (
             3,
-            "Nested-2 | Nested-2 raised error \n   └──Nested-1 | Nested-1 raised error",
+            "Nested-2 | Nested-2 raised error \
+            \n   └──Nested-1 | Nested-1 raised error",
             {
                 Error::pass_with("Nested-2", "Nested-2 raised error", Error::new("Nested-1", "Nested-1 raised error"))
             }
         ),
         (
             4,
-            "Root | Root raised error \n   └──Nested-3 | \n      └──Nested-2 | \n         └──Nested-1 | Nested-1 raised error",
+            "Root | Root raised error \
+            \n   └──Nested-3 | \
+            \n      └──Nested-2 | \
+            \n         └──Nested-1 | Nested-1 raised error",
             {
                 let err = {
                     let err = {

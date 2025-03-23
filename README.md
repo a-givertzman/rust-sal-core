@@ -2,7 +2,19 @@
 
 ## Error
 
-- Error raised in the `Entity` will looks like
+Represents a nested error sequence
+
+> Contains complete path to entity where it was raised, all classes throgh was forwarded up
+
+- As a string may looks like
+```log
+Root | Root raised error 
+    └──Nested-3 | 
+       └──Nested-2 | 
+          └──Nested-1 | Nested-1 raised error
+```
+
+- Error raised in the `Entity`
 
 ```rust
     let dbg = "Entity";
@@ -10,7 +22,7 @@
     assert("Entity | Entity raised error" == err.to_string())
 ```
 
-- Error raised in the `Entity` and passed up through several classes will be looks like
+- Error raised in the `Entity` and passed up through several classes
 
 ```rust
     let err = {
