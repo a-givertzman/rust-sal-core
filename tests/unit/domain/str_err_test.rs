@@ -1,8 +1,8 @@
 #[cfg(test)]
 
-mod subject {
-    use log::{warn, info, debug};
+mod str_err {
     use std::{sync::Once, time::{Duration, Instant}};
+    use sal_core::StrErr;
     use testing::stuff::max_test_duration::TestDuration;
     use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
     ///
@@ -22,15 +22,25 @@ mod subject {
     ///
     /// Testing such functionality / behavior
     #[test]
-    fn functionality() {
+    fn new() -> Result<(), Box<dyn std::error::Error>> {
         DebugSession::init(LogLevel::Debug, Backtrace::Short);
         init_once();
         init_each();
-        let dbg = "test";
+        let dbg = "str_err";
         log::debug!("\n{}", dbg);
-        let test_duration = TestDuration::new(&dbg, Duration::from_secs(10));
+        let test_duration = TestDuration::new(dbg, Duration::from_secs(10));
         test_duration.run().unwrap();
-        assert!(result == target, "step {} \nresult: {:?}\ntarget: {:?}", step, result, target);
+        let err = StrErr::new(dbg, "first error");
+        log::debug!("{}", err);
+        let err = StrErr::pass(dbg, err);
+        log::debug!("{}", err);
+        let err = StrErr::pass_with(dbg, "Locally raised error", err);
+        log::debug!("{}", err);
+        {
+            Err(StrErr::new(dbg, "Returns error"))
+        }?;
+        // assert!(result == target, "step {} \nresult: {:?}\ntarget: {:?}", step, result, target);
         test_duration.exit();
+        Ok(())
     }
 }
