@@ -7,6 +7,7 @@ Represents a nested error sequence
 > Contains complete path to entity where it was raised, all classes throgh was forwarded up
 
 - As a string may looks like
+
 ```log
 Root | Root raised error 
     └──Nested-3 | 
