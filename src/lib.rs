@@ -1,3 +1,6 @@
 mod domain;
 
-pub use domain::str_err::StrErr as StrErr;
+pub use domain::error::Error as Error;
+
+#[cfg(test)]
+mod tests;

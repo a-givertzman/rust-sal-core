@@ -1,1 +1,1 @@
-pub(crate) mod str_err;
+pub(crate) mod error;
