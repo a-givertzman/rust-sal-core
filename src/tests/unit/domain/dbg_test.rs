@@ -90,10 +90,7 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
         pub fn foo(&self) {
-            for result in [
-                Ok(173),
-                Err("Was error"),
-            ] {
+            for result in [Ok(173), Err("Was error")] {
                 match result {
                     Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
                     Err(err) => self.dbg.warn("foo", format!("Error: {}", err)),   // "WARN: Parent/Entity | Error: Was error"
@@ -104,10 +101,11 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
     let entity = Entity::new(dbg);
     entity.foo();
     let dbg = Dbg::new("test_dbg", "Me");
-    dbg.info("new", "Info message");
-    dbg.debug("new", "Debug message");
-    dbg.warn("new", "Warning message");
-    dbg.error("new", "Error message");
+    let fn_name = "new";
+    dbg.info(fn_name, "Info message");
+    dbg.debug(fn_name, "Debug message");
+    dbg.warn(fn_name, "Warning message");
+    dbg.error(fn_name, "Error message");
     test_duration.exit();
     Ok(())
 }
