@@ -6,17 +6,16 @@
 /// }
 /// impl Entity {
 ///     pub fn new(parent: impl Into<String>) -> Self {
-///         let name = format!("{}/Entity", parent);
 ///         Self {
-///             dbg: Dbg::new(name) 
+///             dbg: Dbg::new(parent.into(), "Entity"),
 ///         }
 ///     }
 ///     pub fn foo(&self) {
-///         let result = Ok(173);
-///         let result = Err("Was error");
+///         let result: Result<usize, &str> = Ok(173);
+///         let result: Result<usize, &str> = Err("Was error");
 ///         match result {
-///             Ok(val) => self.dbg.info(format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
-///             Err(err) => self.dbg.warn(format!("Error: {}", err)),   // "WARN: Parent/Entity | Error: Was error"
+///             Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity.foo | Result: 173"
+///             Err(err) => self.dbg.warn("foo", format!("Error: {}", err)),   // "WARN: Parent/Entity.foo | Error: Was error"
 ///         }
 ///     }
 /// }
@@ -44,18 +43,18 @@ impl Dbg {
     }
     ///
     /// Logs a message at the `debug` level.
-    pub fn debug(&self, msg: impl AsRef<str>) {
-        log::debug!("{} | {}", self.me, msg.as_ref());
+    pub fn debug(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::debug!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `warn` level.
-    pub fn warn(&self, msg: impl AsRef<str>) {
-        log::warn!("{} | {}", self.me, msg.as_ref());
+    pub fn warn(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::warn!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `error` level.
-    pub fn error(&self, msg: impl AsRef<str>) {
-        log::error!("{} | {}", self.me, msg.as_ref());
+    pub fn error(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::error!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
     }
 }
 //

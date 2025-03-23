@@ -93,24 +93,18 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
             let result: Result<usize, &str> = Ok(173);
             let result: Result<usize, &str> = Err("Was error");
             match result {
-                Ok(val) => self.dbg.info(fn_name(Self::foo), format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
-                Err(err) => self.dbg.warn(format!("Error: {}", err)),   // "WARN: Parent/Entity | Error: Was error"
+                Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity | Result: 173"
+                Err(err) => self.dbg.warn("foo", format!("Error: {}", err)),   // "WARN: Parent/Entity | Error: Was error"
             }
         }
     }
-
+    let entity = Entity::new(dbg);
+    entity.foo();
     let dbg = Dbg::new("test_dbg", "Me");
-    let m = stringify!(new);
-    dbg.info("Info message");
-    dbg.debug("Debug message");
-    dbg.warn("Warning message");
-    dbg.error("Error message");
+    dbg.info("new", "Info message");
+    dbg.debug("new", "Debug message");
+    dbg.warn("new", "Warning message");
+    dbg.error("new", "Error message");
     test_duration.exit();
     Ok(())
-}
-fn fn_name<F>(_: F) -> &'static str
-where
-    F: Fn(),
-{
-    std::any::type_name::<F>()
 }
