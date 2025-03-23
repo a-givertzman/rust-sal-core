@@ -1,1 +1,1 @@
-mod str_err_test;
+mod error_test;
