@@ -28,7 +28,7 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
     init_each();
     let dbg = "test_dbg";
     log::debug!("\n{}", dbg);
-    let test_duration = TestDuration::new(dbg, Duration::from_secs(10));
+    let test_duration = TestDuration::new(dbg, Duration::from_secs(1));
     test_duration.run().unwrap();
     struct Entity {
         dbg: Dbg,
@@ -56,6 +56,28 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
     dbg.debug(fn_name, "Debug message");
     dbg.warn(fn_name, "Warning message");
     dbg.error(fn_name, "Error message");
+    test_duration.exit();
+    Ok(())
+}
+///
+/// Testing `to_string()`
+#[test]
+fn to_string() -> Result<(), Box<dyn std::error::Error>> {
+    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    init_once();
+    init_each();
+    let dbg = "test_dbg";
+    log::debug!("\n{}", dbg);
+    let test_duration = TestDuration::new(dbg, Duration::from_secs(1));
+    test_duration.run().unwrap();
+    let test_data = [
+        (1, format!("{dbg}/"), Dbg::new(dbg, "")),
+        (1, format!("{dbg}/me"), Dbg::new(dbg, "me")),
+    ];
+    for (step, target, value) in test_data {
+        let result = value.to_string();
+        assert!(result == target, "step {} \nresult: {:?}\ntarget: {:?}", step, result, target);
+    }
     test_duration.exit();
     Ok(())
 }

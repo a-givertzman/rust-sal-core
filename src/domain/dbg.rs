@@ -20,6 +20,7 @@
 ///     }
 /// }
 /// ```
+#[derive(Clone)]
 pub struct Dbg {
     me: String,
 }
@@ -69,6 +70,6 @@ impl std::fmt::Display for Dbg {
 //
 impl From<Dbg> for String {
     fn from(value: Dbg) -> Self {
-        todo!()
+        String::from(value.me)
     }
 }
