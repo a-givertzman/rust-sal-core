@@ -3,8 +3,7 @@
 use std::{sync::Once, time::Duration};
 use testing::stuff::max_test_duration::TestDuration;
 use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
-
-use crate::{domain::dbg::Dbg, Error};
+use crate::domain::dbg::Dbg;
 ///
 ///
 static INIT: Once = Once::new();
@@ -20,7 +19,7 @@ fn init_once() {
 ///  - ...
 fn init_each() -> () {}
 ///
-/// Testing such functionality / behavior
+/// Testing `new()`
 #[test]
 fn new() -> Result<(), Box<dyn std::error::Error>> {
     DebugSession::init(LogLevel::Debug, Backtrace::Short);
@@ -72,7 +71,8 @@ fn to_string() -> Result<(), Box<dyn std::error::Error>> {
     test_duration.run().unwrap();
     let test_data = [
         (1, format!("{dbg}/"), Dbg::new(dbg, "")),
-        (1, format!("{dbg}/me"), Dbg::new(dbg, "me")),
+        (1, format!("/Me"), Dbg::new("", "Me")),
+        (1, format!("{dbg}/Me"), Dbg::new(dbg, "Me")),
     ];
     for (step, target, value) in test_data {
         let result = value.to_string();
