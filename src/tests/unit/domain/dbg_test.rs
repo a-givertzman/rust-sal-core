@@ -81,3 +81,16 @@ fn to_string() -> Result<(), Box<dyn std::error::Error>> {
     test_duration.exit();
     Ok(())
 }
+
+mod dbg {
+    macro_rules! dbg {
+        () => {{
+            fn f() {}
+            fn type_name_of<T>(_: T) -> &'static str {
+                std::any::type_name::<T>()
+            }
+            let name = type_name_of(f);
+            &name[..name.len() - 3]
+        }}
+    }
+}
