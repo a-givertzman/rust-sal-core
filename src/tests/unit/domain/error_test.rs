@@ -3,8 +3,7 @@
 use std::{sync::Once, time::Duration};
 use testing::stuff::max_test_duration::TestDuration;
 use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
-
-use crate::Error;
+use crate::error::Error;
 ///
 ///
 static INIT: Once = Once::new();
@@ -36,7 +35,7 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
             "Nested-1 | Nested-1 raised error",
             {
                 let dbg = "Nested-1";
-                Error::new(dbg, "Nested-1 raised error")
+                Error::new(dbg, "").err("Nested-1 raised error")
             }
         ),
         (
@@ -44,7 +43,7 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
             "Nested-2 | \
             \n   └──Nested-1 | Nested-1 raised error",
             {
-                Error::pass("Nested-2", Error::new("Nested-1", "Nested-1 raised error"))
+                Error::new("Nested-2", "").pass(Error::new("Nested-1", "").err("Nested-1 raised error"))
             }
         ),
         (
@@ -52,7 +51,7 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
             "Nested-2 | Nested-2 raised error \
             \n   └──Nested-1 | Nested-1 raised error",
             {
-                Error::pass_with("Nested-2", "Nested-2 raised error", Error::new("Nested-1", "Nested-1 raised error"))
+                Error::new("Nested-2", "").pass_with("Nested-2 raised error", Error::new("Nested-1", "").err("Nested-1 raised error"))
             }
         ),
         (
@@ -66,16 +65,16 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
                     let err = {
                         let err = {
                             let dbg = "Nested-1";
-                            Error::new(dbg, "Nested-1 raised error")
+                            Error::new(dbg, "").err("Nested-1 raised error")
                         };
                         let dbg = "Nested-2";
-                        Error::pass(dbg, err)
+                        Error::new(dbg, "").pass(err)
                     };
                     let dbg = "Nested-3";
-                    Error::pass(dbg, err)
+                    Error::new(dbg, "").pass(err)
                 };
                 let dbg = "Root";
-                Error::pass_with(dbg, "Root raised error", err)
+                Error::new(dbg, "").pass_with("Root raised error", err)
             }
         ),
     ];
@@ -87,7 +86,7 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
     {
         match true {
             true => Ok(()),
-            false => Err(Error::new(dbg, "Returns error")),
+            false => Err(Error::new(dbg, "").err("Returns error")),
         }
     }?;
     test_duration.exit();
