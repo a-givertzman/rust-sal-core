@@ -39,23 +39,27 @@ impl Dbg {
     }
     ///
     /// Logs a message at the `info` level.
-    pub fn info(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
-        log::info!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
+    /// - `area` - code block from which message `msg` will be logged
+    pub fn info(&self, area: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::info!("{}.{} | {}", self.me, area.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `debug` level.
-    pub fn debug(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
-        log::debug!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
+    /// - `area` - code block from which message `msg` will be logged
+    pub fn debug(&self, area: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::debug!("{}.{} | {}", self.me, area.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `warn` level.
-    pub fn warn(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
-        log::warn!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
+    /// - `area` - code block from which message `msg` will be logged
+    pub fn warn(&self, area: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::warn!("{}.{} | {}", self.me, area.as_ref(), msg.as_ref());
     }
     ///
     /// Logs a message at the `error` level.
-    pub fn error(&self, caller: impl AsRef<str>, msg: impl AsRef<str>) {
-        log::error!("{}.{} | {}", self.me, caller.as_ref(), msg.as_ref());
+    /// - `area` - code block from which message `msg` will be logged
+    pub fn error(&self, area: impl AsRef<str>, msg: impl AsRef<str>) {
+        log::error!("{}.{} | {}", self.me, area.as_ref(), msg.as_ref());
     }
 }
 //
