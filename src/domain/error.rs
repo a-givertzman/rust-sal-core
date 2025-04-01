@@ -7,7 +7,7 @@
 ///        └──Nested-2 | 
 ///           └──Nested-1 | Nested-1 raised error
 /// ```
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Error {
     me: String,
     msg: Option<String>,
