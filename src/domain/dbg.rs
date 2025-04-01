@@ -38,6 +38,14 @@ impl Dbg {
         }
     }
     ///
+    /// Returns [Dbg] new instance without parent
+    /// - `me` - The name of `Entity` to be debuged
+    pub fn own(me: impl Into<String>) -> Self {
+        Self {
+            me: format!("{}", me.into()),
+        }
+    }
+    ///
     /// Logs a message at the `info` level.
     /// - `area` - code block from which message `msg` will be logged
     pub fn info(&self, area: impl AsRef<str>, msg: impl AsRef<str>) {
