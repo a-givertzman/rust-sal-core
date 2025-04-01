@@ -85,3 +85,10 @@ impl From<Dbg> for String {
         String::from(value.me)
     }
 }
+//
+//
+impl From<&Dbg> for String {
+    fn from(value: &Dbg) -> Self {
+        String::from(&value.me)
+    }
+}
