@@ -111,3 +111,10 @@ impl From<String> for Error {
         Error::new("", "").err(msg)
     }
 }
+//
+//
+impl From<&String> for Error {
+    fn from(msg: &String) -> Self {
+        Error::new("", "").err(msg)
+    }
+}
