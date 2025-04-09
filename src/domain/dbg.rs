@@ -7,7 +7,7 @@
 /// impl Entity {
 ///     pub fn new(parent: impl Into<String>) -> Self {
 ///         Self {
-///             dbg: Dbg::new(parent.into(), "Entity"),
+///             dbg: Dbg::new(parent, "Entity"),
 ///         }
 ///     }
 ///     pub fn foo(&self) {
@@ -16,6 +16,10 @@
 ///         match result {
 ///             Ok(val) => self.dbg.info("foo", format!("Result: {}", val)),   // "INFO: Parent/Entity.foo | Result: 173"
 ///             Err(err) => self.dbg.warn("foo", format!("Error: {}", err)),   // "WARN: Parent/Entity.foo | Error: Was error"
+///         }
+///         match result {
+///             Ok(val) => log::info!("{dbg}.foo | Result: {:?}", val),        // "INFO: Parent/Entity.foo | Result: 173"
+///             Err(err) => log::warn!("{dbg}.foo | Error: {:?}", err),       // "WARN: Parent/Entity.foo | Error: Was error"
 ///         }
 ///     }
 /// }
@@ -73,6 +77,14 @@ impl Dbg {
 //
 //
 impl std::fmt::Display for Dbg {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // Delegate to the Display impl for `&str`:
+        write!(f, "{}", self.me)
+    }
+}
+//
+//
+impl std::fmt::Debug for Dbg {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         // Delegate to the Display impl for `&str`:
         write!(f, "{}", self.me)
