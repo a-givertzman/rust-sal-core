@@ -1,3 +1,5 @@
+use bincode::{Decode, Encode};
+
 ///
 /// Represents a nested error sequence,
 /// - As a string may looks like
@@ -7,7 +9,7 @@
 ///        └──Nested-2 | 
 ///           └──Nested-1 | Nested-1 raised error
 /// ```
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Decode, Encode)]
 pub struct Error {
     me: String,
     msg: Option<String>,
