@@ -24,8 +24,7 @@ use syn::ItemFn;
 /// }
 /// ```
 #[proc_macro_attribute]
-pub fn dbg(args: TokenStream, input: TokenStream) -> TokenStream {
-    println!("attrs: {:#?}", args);
+pub fn dbg(_args: TokenStream, input: TokenStream) -> TokenStream {
     // log_duration_impl(args, item)
     let item = input.clone();
     let item = syn::parse_macro_input!(item as ItemFn);
