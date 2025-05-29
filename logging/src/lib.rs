@@ -15,7 +15,7 @@ use syn::ItemFn;
 /// impl MyStruct {
 ///     #[dbg]
 ///     pub fn show(&self, val: usize) {
-///         log::debug!("val: {}", val);
+///         sal_core::log::debug!("val: {}", val);
 ///     }
 /// }
 /// fn main() {
