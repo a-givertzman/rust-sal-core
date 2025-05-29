@@ -6,10 +6,6 @@ members = [
     "logging",
 ]
 
-# [dependencies]
-# sal-core = { path = "./sal-core" }
-# logging = { path = "./logging" }
-
 [workspace.dependencies]
 log = "^0.4"
 env_logger = "^0.11"
