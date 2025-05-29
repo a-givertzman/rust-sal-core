@@ -2,20 +2,19 @@
 workspace.resolver = "3"
 
 members = [
+    "sal-core",
     "logging",
 ]
 
-[workspace.package]
-name = "sal-core"
-version = "0.0.4"
-edition = "2024"
+# [dependencies]
+# sal-core = { path = "./sal-core" }
+# logging = { path = "./logging" }
 
 [workspace.dependencies]
 log = "^0.4"
 env_logger = "^0.11"
 #
 # Internal dependencies
-logging = { path = "./logging" }
 testing = { git = "https://github.com/a-givertzman/rust-testing.git", tag = "0.1.2" }
 debugging = { git = "https://github.com/a-givertzman/rust-debuging.git", tag = "0.0.1" }
 #

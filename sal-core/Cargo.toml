@@ -1,0 +1,16 @@
+[package]
+name = "sal-core"
+version = "0.0.4"
+edition = "2024"
+
+[dependencies]
+log = { workspace = true }
+env_logger = { workspace = true }
+#
+# Internal
+logging = { path = "../logging" }
+testing = { workspace = true }
+debugging = { workspace = true }
+#
+# Serde
+bincode = { workspace = true }

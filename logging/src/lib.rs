@@ -1,8 +1,8 @@
 mod log_macro_input;
 use log_macro_input::LogMacroInput;
 use proc_macro::TokenStream;
-use quote::{quote, IdentFragment};
-use syn::{spanned::Spanned, ItemFn};
+use quote::quote;
+use syn::ItemFn;
 
 ///
 /// Define this attribute above the method,
