@@ -11,5 +11,6 @@ pub mod error {
 pub mod log {
     pub use logging::*;
 }
+
 #[cfg(test)]
 mod tests;
