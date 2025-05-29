@@ -8,5 +8,8 @@ pub mod error {
     pub use super::domain::error::Error as Error;
 }
 
+pub mod log {
+    pub use logging::*;
+}
 #[cfg(test)]
 mod tests;

@@ -1,13 +1,19 @@
-[package]
+[workspace]
+members = [
+    "logging",
+]
+
+[workspace.package]
 name = "sal-core"
-version = "0.1.0"
+version = "0.0.4"
 edition = "2024"
 
-[dependencies]
+[workspace.dependencies]
 log = "^0.4"
 env_logger = "^0.11"
 #
 # Internal dependencies
+logging = { path = "./logging" }
 testing = { git = "https://github.com/a-givertzman/rust-testing.git", tag = "0.1.2" }
 debugging = { git = "https://github.com/a-givertzman/rust-debuging.git", tag = "0.0.1" }
 #
