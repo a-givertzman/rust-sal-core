@@ -1,6 +1,7 @@
 #[cfg(test)]
 
 use std::{sync::Once, time::Duration};
+use logging::{dbg, err};
 use testing::stuff::max_test_duration::TestDuration;
 use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
 use crate::error::Error;
@@ -19,7 +20,7 @@ fn init_once() {
 ///  - ...
 fn init_each() -> () {}
 ///
-/// Testing such functionality / behavior
+/// Testing Error
 #[test]
 fn pass() -> Result<(), Box<dyn std::error::Error>> {
     DebugSession::init(LogLevel::Debug, Backtrace::Short);
@@ -91,4 +92,37 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
     }?;
     test_duration.exit();
     Ok(())
+}
+///
+/// Testing error macros
+#[test]
+fn pass_err_macro() -> Result<(), Box<dyn std::error::Error>> {
+    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    init_once();
+    init_each();
+    let dbg_ = "str_err";
+    log::debug!("\n{}", dbg_);
+    let test_duration = TestDuration::new(dbg_, Duration::from_secs(10));
+    test_duration.run().unwrap();
+    let my_struct = MyStruct { dbg: "MyStruct".into() };
+    let err = my_struct.show(12);       // Err("MyStruct.show | val: 12")
+    log::debug!("err: {:?}", err);
+    test_duration.exit();
+    Ok(())
+}
+///
+/// For testing only
+struct MyStruct {
+    dbg: String,    // any type implements Display, the name of this field must be `dbg`
+}
+impl MyStruct {
+    #[err("self.dbg")]
+    pub fn show(&self, val: usize) -> Result<(), Error> {
+        // Ok(())
+        let err = logging::pass_err!("Error in {} seconds", val);
+        log::debug!("{}", err);
+        let err = logging::pass_err!("Error in {} seconds", val);
+        log::debug!("{}", err);
+        Err(err)
+    }
 }
