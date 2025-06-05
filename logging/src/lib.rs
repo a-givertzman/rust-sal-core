@@ -1,10 +1,13 @@
 mod err_macro_input;
+mod err_pass_macro_input;
 mod log_macro_input;
 use log_macro_input::LogMacroInput;
 use err_macro_input::ErrMacroInput;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::ItemFn;
+
+use crate::err_pass_macro_input::ErrPassMacroInput;
 
 
 ///
@@ -154,7 +157,7 @@ pub fn err(args: TokenStream, input: TokenStream) -> TokenStream {
 ///
 /// Error::err | Returns just happens error.
 #[proc_macro]
-pub fn pass_err(tokens: TokenStream) -> TokenStream {
+pub fn err_new(tokens: TokenStream) -> TokenStream {
     let value = syn::parse_macro_input!(tokens as LogMacroInput);
     let f = value.fmt;
     let vals = value.vals.into_pairs();
@@ -171,34 +174,28 @@ pub fn pass_err(tokens: TokenStream) -> TokenStream {
 /// Error::pass | Returns error created from nested entities
 /// - optionally you can pass with additional message
 #[proc_macro]
-pub fn error_pass(tokens: TokenStream) -> TokenStream {
-    let value = syn::parse_macro_input!(tokens as LogMacroInput);
-    let f = value.fmt;
-    let vals = value.vals.into_pairs();
-    if vals.len() > 0 {
-        quote!(
-            __err.pass_with(
-                "{}.{} | {:?}",
-                self.dbg,
-                __fn_label,
-                format!(
-                    #f,
-                    #(#vals)*
+pub fn err_pass(tokens: TokenStream) -> TokenStream {
+    let value = syn::parse_macro_input!(tokens as ErrPassMacroInput);
+    let value_err = value.err;
+    // let f = value.fmt;
+    match value.fmt.clone() {
+        Some(fmt) => {
+            let vals = value.vals.unwrap().into_pairs();
+            quote!(
+                __err.pass_with(
+                    format!(
+                        #fmt,
+                        #(#vals)*
+                    )
+                    #value_err,
                 )
-            )
-        ).into()
-    } else {
-        quote!(
-            __err.pass(
-                "{}.{} | {:?}",
-                self.dbg,
-                __fn_label,
-                format!(
-                    #f,
-                    #(#vals)*
-                )
-            )
-        ).into()
+            ).into()
+        }
+        None => {
+            quote!(
+                __err.pass(#value_err)
+            ).into()
+        }
     }
 }
 // ///

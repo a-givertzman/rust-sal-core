@@ -119,9 +119,11 @@ impl MyStruct {
     #[err("self.dbg")]
     pub fn show(&self, val: usize) -> Result<(), Error> {
         // Ok(())
-        let err = logging::pass_err!("Error in {} seconds", val);
+        let err = logging::err_new!("Error in {} seconds", val);
         log::debug!("{}", err);
-        let err = logging::pass_err!("Error in {} seconds", val);
+        let err = logging::err_pass!(err);
+        log::debug!("{}", err);
+        let err = logging::err_pass!(err, "Error in {} seconds", val);
         log::debug!("{}", err);
         Err(err)
     }
