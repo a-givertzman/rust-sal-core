@@ -1,9 +1,9 @@
 [workspace]
-workspace.resolver = "3"
+resolver = "3"
 
 members = [
     "sal-core",
-    "logging",
+    "sal-core-macros",
 ]
 
 [workspace.dependencies]

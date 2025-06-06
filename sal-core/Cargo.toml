@@ -8,7 +8,7 @@ log = { workspace = true }
 env_logger = { workspace = true }
 #
 # Internal
-logging = { path = "../logging" }
+sal-core-macros = { path = "../sal-core-macros" }
 testing = { workspace = true }
 debugging = { workspace = true }
 #

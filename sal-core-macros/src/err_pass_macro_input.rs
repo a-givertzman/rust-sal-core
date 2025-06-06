@@ -3,16 +3,10 @@ use syn::punctuated::Punctuated;
 ///
 /// ### Extracts `TokenStream` for function-like proc macro
 /// 
-/// Used for passing function arguments into `println(fmt, vals)` or `log::info(fmt, vals)`
-/// 
-/// Where function signature:
-/// ```ignore
-/// fn debug("{}: {}", a, b)
-/// ```
-/// 
-/// **`"{}: {}"`** - will be extracted into `self.fmt`
-/// 
-/// **`a`, `b`** - will be extracted into `self.values`
+/// Used for passing function arguments into
+/// - `err_new("Error message, val: {:?}", val)` or
+/// - `err_pass(err)` or
+/// - `err_pass(err, "Additional message {:?}", val)`
 pub(super) struct ErrPassMacroInput {
     pub err: syn::Expr,
     pub fmt: Option<syn::PatLit>,
@@ -37,7 +31,7 @@ impl syn::parse::Parse for ErrPassMacroInput {
         Ok(Self {
             err,
             fmt,
-            vals, //: input.parse_terminated(syn::Expr::parse, syn::Token![,])?,
+            vals,
         })
     }
 }

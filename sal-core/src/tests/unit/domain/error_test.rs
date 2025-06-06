@@ -1,7 +1,7 @@
 #[cfg(test)]
 
 use std::{sync::Once, time::Duration};
-use logging::{dbg, err};
+use sal_core_macros::{err, err_new, err_pass};
 use testing::stuff::max_test_duration::TestDuration;
 use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
 use crate::error::Error;
@@ -119,11 +119,11 @@ impl MyStruct {
     #[err("self.dbg")]
     pub fn show(&self, val: usize) -> Result<(), Error> {
         // Ok(())
-        let err = logging::err_new!("Error in {} seconds", val);
+        let err = err_new!("Error in {} seconds", val);
         log::debug!("{}", err);
-        let err = logging::err_pass!(err);
+        let err = err_pass!(err);
         log::debug!("{}", err);
-        let err = logging::err_pass!(err, "Error in {} seconds", val);
+        let err = err_pass!(err, "Error in {} seconds", val);
         log::debug!("{}", err);
         Err(err)
     }

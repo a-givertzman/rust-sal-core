@@ -156,6 +156,11 @@ pub fn err(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 ///
 /// Error::err | Returns just happens error.
+/// 
+/// ```ignore
+/// let err = File::create("foo.txt");
+/// return Err();
+/// ```
 #[proc_macro]
 pub fn err_new(tokens: TokenStream) -> TokenStream {
     let value = syn::parse_macro_input!(tokens as LogMacroInput);
@@ -177,8 +182,6 @@ pub fn err_new(tokens: TokenStream) -> TokenStream {
 pub fn err_pass(tokens: TokenStream) -> TokenStream {
     let value = syn::parse_macro_input!(tokens as ErrPassMacroInput);
     let value_err = value.err;
-    // let value_err = quote! { format!("{:?}", #value_err); };
-    // let f = value.fmt;
     match value.fmt.clone() {
         Some(fmt) => {
             let vals = value.vals.unwrap().into_pairs();
@@ -199,26 +202,6 @@ pub fn err_pass(tokens: TokenStream) -> TokenStream {
         }
     }
 }
-// ///
-// /// Error::pass_with | Returns error created from nested entities with additional message
-// #[proc_macro]
-// pub fn errpasswith(tokens: TokenStream) -> TokenStream {
-//     let value = syn::parse_macro_input!(tokens as LogMacroInput);
-//     let f = value.fmt;
-//     let vals = value.vals.into_pairs();
-//     quote!(
-//         log::info!(
-//             "{}.{} | {:?}",
-//             self.dbg,
-//             __fn_label,
-//             format!(
-//                 #f,
-//                 #(#vals)*
-//             )
-//         );
-//     ).into()
-// }
-
 ///
 /// Logs a message at the info level.
 #[proc_macro]
