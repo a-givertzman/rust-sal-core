@@ -104,3 +104,10 @@ impl From<&Dbg> for String {
         String::from(&value.me)
     }
 }
+//
+//
+impl AsRef<str> for Dbg {
+    fn as_ref(&self) -> &str {
+        &self.me
+    }
+}
