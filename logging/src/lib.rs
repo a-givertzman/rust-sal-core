@@ -177,6 +177,7 @@ pub fn err_new(tokens: TokenStream) -> TokenStream {
 pub fn err_pass(tokens: TokenStream) -> TokenStream {
     let value = syn::parse_macro_input!(tokens as ErrPassMacroInput);
     let value_err = value.err;
+    // let value_err = quote! { format!("{:?}", #value_err); };
     // let f = value.fmt;
     match value.fmt.clone() {
         Some(fmt) => {
@@ -186,7 +187,7 @@ pub fn err_pass(tokens: TokenStream) -> TokenStream {
                     format!(
                         #fmt,
                         #(#vals)*
-                    )
+                    ),
                     #value_err,
                 )
             ).into()
