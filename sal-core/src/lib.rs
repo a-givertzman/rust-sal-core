@@ -15,6 +15,7 @@ pub mod error {
     pub use sal_core_macros::err;
     pub use sal_core_macros::err_new;
     pub use sal_core_macros::err_pass;
+    pub use crate::domain::errors_limit::*;
 }
 
 #[cfg(test)]
