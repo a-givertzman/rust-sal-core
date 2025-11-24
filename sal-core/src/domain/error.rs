@@ -120,3 +120,8 @@ impl From<&String> for Error {
         Error::new("", "").err(msg)
     }
 }
+impl Into<String> for Error {
+    fn into(self) -> String {
+        self.join(0)
+    }
+}
