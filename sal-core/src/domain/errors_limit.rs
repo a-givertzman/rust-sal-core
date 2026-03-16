@@ -39,6 +39,16 @@ impl ErrorLimit {
     ///
     /// Returns current number of errors
     pub fn errors(&self) -> usize {
-        self.errors
+        self.limit - self.errors
+    }
+    ///
+    /// Returns `true` if number of errors is not exceeded
+    pub fn is_ok(&self) -> bool {
+        self.errors > 0
+    }
+    ///
+    /// Returns `true` if number of errors is exceeded
+    pub fn is_fail(&self) -> bool {
+        ! self.is_ok()
     }
 }
