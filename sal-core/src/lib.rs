@@ -1,4 +1,11 @@
 mod domain;
+mod traits;
+mod dbg_macro;
+mod context_macro;
+
+pub use traits::*;
+pub use dbg_macro::*;
+pub use context_macro::*;
 
 pub mod dbg {
     pub use crate::domain::dbg::Dbg;
@@ -15,6 +22,7 @@ pub mod error {
     pub use sal_core_macros::err;
     pub use sal_core_macros::err_new;
     pub use sal_core_macros::err_pass;
+    pub use sal_core_macros::auto_impl;
     pub use crate::domain::errors_limit::*;
 }
 

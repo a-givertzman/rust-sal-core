@@ -5,7 +5,7 @@ use log_macro_input::LogMacroInput;
 use err_macro_input::ErrMacroInput;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::ItemFn;
+use syn::{parse_macro_input, ItemFn, ItemImpl, ImplItem, parse_quote};
 
 use crate::err_pass_macro_input::ErrPassMacroInput;
 
@@ -296,4 +296,30 @@ pub fn error(tokens: TokenStream) -> TokenStream {
             )
         );
     ).into()
+}
+///
+/// Macros for autogenerating err inside impl
+#[proc_macro_attribute]
+pub fn auto_impl(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let mut input = parse_macro_input!(item as ItemImpl);
+
+    for item in &mut input.items {
+        if let ImplItem::Fn(method) = item {
+            let has_self = method.sig.inputs.iter().any(|input| {
+                if let syn::FnArg::Receiver(_) = input { true } else { false }
+            });
+
+            if has_self {
+                let fn_name = method.sig.ident.to_string();
+                let block = &method.block;
+                
+                method.block = parse_quote!({
+                    let e = self.scope(#fn_name);
+                    #block
+                });
+            }
+        }
+    }
+
+    TokenStream::from(quote!(#input))
 }
