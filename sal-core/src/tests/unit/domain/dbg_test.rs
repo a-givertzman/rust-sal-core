@@ -2,7 +2,7 @@
 
 use std::{sync::Once, time::Duration};
 use testing::stuff::max_test_duration::TestDuration;
-use debugging::session::debug_session::{DebugSession, LogLevel, Backtrace};
+use debugging::session::debug_session::{DebugSession, LogLevel};
 use crate::domain::dbg::Dbg;
 ///
 ///
@@ -22,7 +22,7 @@ fn init_each() -> () {}
 /// Testing `new()`
 #[test]
 fn new() -> Result<(), Box<dyn std::error::Error>> {
-    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    DebugSession::new().filter(LogLevel::Debug).init();
     init_once();
     init_each();
     let dbg = "test_dbg";
@@ -62,7 +62,7 @@ fn new() -> Result<(), Box<dyn std::error::Error>> {
 /// Testing `to_string()`
 #[test]
 fn to_string() -> Result<(), Box<dyn std::error::Error>> {
-    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    DebugSession::new().filter(LogLevel::Debug).init();
     init_once();
     init_each();
     let dbg = "test_dbg";

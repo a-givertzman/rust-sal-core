@@ -23,7 +23,7 @@ fn init_each() -> () {}
 /// Testing Error
 #[test]
 fn pass() -> Result<(), Box<dyn std::error::Error>> {
-    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    DebugSession::new().filter(LogLevel::Debug).init();
     init_once();
     init_each();
     let dbg = "str_err";
@@ -97,7 +97,7 @@ fn pass() -> Result<(), Box<dyn std::error::Error>> {
 /// Testing error macros
 #[test]
 fn pass_err_macro() -> Result<(), Box<dyn std::error::Error>> {
-    DebugSession::init(LogLevel::Debug, Backtrace::Short);
+    DebugSession::new().filter(LogLevel::Debug).init();
     init_once();
     init_each();
     let dbg_ = "str_err";
