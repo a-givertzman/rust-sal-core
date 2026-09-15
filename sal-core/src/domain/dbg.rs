@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 ///
 /// for info debug:
 /// ```ignore
@@ -5,7 +7,7 @@
 ///     dbg: Dbg,
 /// }
 /// impl Entity {
-///     pub fn new(parent: impl Into<String>) -> Self {
+///     pub fn new(parent: impl AsRef<str>) -> Self {
 ///         Self {
 ///             dbg: Dbg::new(parent, "Entity"),
 ///         }
@@ -24,9 +26,9 @@
 ///     }
 /// }
 /// ```
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Dbg {
-    me: String,
+    me: Arc<str>,
 }
 //
 //
@@ -36,17 +38,21 @@ impl Dbg {
     /// - `parent` - The parent `Entity`
     /// - `me` - The name of `Entity` to be debuged
     /// - `parent` and `me` => "parent/me"
-    pub fn new(parent: impl Into<String>, me: impl Into<String>) -> Self {
-        Self {
-            me: format!("{}/{}", parent.into(), me.into()),
-        }
+    pub fn new(parent: impl AsRef<str>, me: impl AsRef<str>) -> Self {
+        let parent = parent.as_ref();
+        let me = if parent.is_empty() {
+            Arc::from(format!("/{}", me.as_ref()))
+        } else  {
+            Arc::from(format!("{}/{}", parent, me.as_ref()))
+        };
+        Self { me }
     }
     ///
     /// Returns [Dbg] new instance without parent
     /// - `me` - The name of `Entity` to be debuged
-    pub fn own(me: impl Into<String>) -> Self {
+    pub fn own(me: impl AsRef<str>) -> Self {
         Self {
-            me: format!("{}", me.into()),
+            me: me.as_ref().into(),
         }
     }
     ///
@@ -75,33 +81,36 @@ impl Dbg {
     }
 }
 //
+impl Default for Dbg {
+    fn default() -> Self {
+        Self { me: Arc::from(String::default()) }
+    }
+}
 //
 impl std::fmt::Display for Dbg {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        // Delegate to the Display impl for `&str`:
-        write!(f, "{}", self.me)
+        f.pad(&self.me)
     }
 }
 //
 //
 impl std::fmt::Debug for Dbg {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        // Delegate to the Display impl for `&str`:
-        write!(f, "{}", self.me)
+        f.pad(&self.me)
     }
 }
 //
 //
 impl From<Dbg> for String {
     fn from(value: Dbg) -> Self {
-        String::from(value.me)
+        String::from(&*value.me)
     }
 }
 //
 //
 impl From<&Dbg> for String {
     fn from(value: &Dbg) -> Self {
-        String::from(&value.me)
+        String::from(&*value.me)
     }
 }
 //
