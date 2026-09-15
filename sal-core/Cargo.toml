@@ -1,0 +1,16 @@
+[package]
+name = "sal-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+log = { workspace = true }
+env_logger = { workspace = true }
+#
+# Internal
+sal-core-macros = { path = "../sal-core-macros" }
+testing = { workspace = true }
+debugging = { workspace = true }
+#
+# Serde
+bincode = { workspace = true }
